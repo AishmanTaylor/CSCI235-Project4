@@ -1,20 +1,34 @@
-#!/usr/bin/env pybricks-micropython
-from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
-                                 InfraredSensor, UltrasonicSensor, GyroSensor)
-from pybricks.parameters import Port, Stop, Direction, Button, Color
-from pybricks.tools import wait, StopWatch, DataLog
-from pybricks.robotics import DriveBase
-from pybricks.media.ev3dev import SoundFile, ImageFile
+import robot, lib
+
+CLEAR = 0
+BUMPED_LEFT = 1
+OBJECT = 2
+
+def find_state(bot):
+    distance = bot.sonar.distance()
+    if bot.bump_left.pressed() and bot.bump_right.pressed():
+        return BUMPED_LEFT
+    elif distance < 400:
+        return OBJECT
+    else:
+        return CLEAR
 
 
-# This program requires LEGO EV3 MicroPython v2.0 or higher.
-# Click "Open user guide" on the EV3 extension tab for more information.
+def reward(bot, state, action):
+    if state == BUMPED:
+        return -10
+    elif action == 0:
+        return 1
+    else:
+        return 0
 
-
-# Create your objects here.
-ev3 = EV3Brick()
-
-
-# Write your program here.
-ev3.speaker.beep()
+params = lib.QParameters()
+params.pause_ms = 500
+params.actions = [robot.go_forward, robot.complex_turn]
+params.num_states = 3
+params.state_func = find_state
+params.reward_func = reward
+params.target_visits = 5
+params.discount = 0.5
+params.rate_constant = 10
+params.max_steps = 200

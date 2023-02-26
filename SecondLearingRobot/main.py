@@ -1,13 +1,13 @@
 import robot, lib
 
 CLEAR = 0
-BUMPED_LEFT = 1
+BUMPED = 1
 OBJECT = 2
 
 def find_state(bot):
     distance = bot.sonar.distance()
     if bot.bump_left.pressed() and bot.bump_right.pressed():
-        return BUMPED_LEFT
+        return BUMPED
     elif distance < 400:
         return OBJECT
     else:
@@ -24,7 +24,7 @@ def reward(bot, state, action):
 
 params = lib.QParameters()
 params.pause_ms = 500
-params.actions = [robot.go_forward, robot.complex_turn]
+params.actions = [robot.go_forward, robot.go_right]
 params.num_states = 3
 params.state_func = find_state
 params.reward_func = reward

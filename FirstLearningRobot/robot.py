@@ -9,7 +9,7 @@ class SensorMotor:
         self.right = Motor(Port.D)
         self.bump_left = TouchSensor(Port.S1)
         self.bump_right = TouchSensor(Port.S4)
-        self.sonar = UltrasonicSensor(Port.S3)
+        self.sonar = UltrasonicSensor(Port.S2)
         self.loops = 0
 
     def stop_all(self):

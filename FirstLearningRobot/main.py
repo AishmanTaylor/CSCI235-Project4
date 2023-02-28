@@ -33,4 +33,4 @@ params.discount = 0.5
 params.rate_constant = 10
 params.max_steps = 200
 
-lib.run_q() #functions like the executor from statemachines
+lib.run_q(Senes) #functions like the executor from statemachines

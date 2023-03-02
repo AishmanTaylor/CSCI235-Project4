@@ -1,14 +1,16 @@
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
 from pybricks.parameters import Port, Stop, Direction, Button, Color
+import pybricks.nxtdevices
+
 
 class SensorMotor:
     def __init__(self, ev3):
         self.ev3 = ev3
         self.left = Motor(Port.A)
         self.right = Motor(Port.D)
-        self.sonar_left = UltrasonicSensor(Port.S1)
-        self.sonar_right = UltrasonicSensor(Port.S4)
+        self.sonar_left = pybricks.nxtdevices.UltrasonicSensor(Port.S1)
+        self.sonar_right = pybricks.nxtdevices.UltrasonicSensor(Port.S4)
         self.sonar_middle = UltrasonicSensor(Port.S2)
         self.loops = 0
 
@@ -17,9 +19,9 @@ class SensorMotor:
         self.right.run(0)
 
     def values(self):
-        return ["BL:" + str(self.bump_left.pressed()),
-            "BR:" + str(self.bump_right.pressed()),
-            "SN:" + str(self.sonar.distance())]
+        return ["SL:" + str(self.sonar_left.distance()),
+            "SR:" + str(self.sonar_right.distance()),
+            "SM:" + str(self.sonar_middle.distance())]
 
     def show(self, state, action, reward, total_reward):
         self.ev3.screen.clear()
